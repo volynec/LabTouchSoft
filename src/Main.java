@@ -1,7 +1,8 @@
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
+
 
 /**
  * Created by user on 14.01.2018.
@@ -101,16 +102,19 @@ import java.util.Scanner;
         }
 
         public static void main(String[] args) {
-            try {
-                ArrayList<Integer> arr = new ArrayList<>();
-                Scanner sc = new Scanner(new File("input.txt"));
-                arr.add(Integer.MIN_VALUE);
-                while (sc.hasNextInt()) {
-                    arr.add(sc.nextInt());
+            ArrayList<Integer> intList = new ArrayList<>();
+            intList.add(Integer.MIN_VALUE);
+            try (BufferedReader br = new BufferedReader(new FileReader("input.txt"))) {
+                String str;
+                while ((str = br.readLine()) != null) {
+                    String[] numbers = str.split("[\\s,.:|]+");
+                    for (String number : numbers) {
+                        intList.add(Integer.parseInt(number));
+                    }
                 }
-                recur(arr, 1, 0);
+                recur(intList, 1, 0);
                 System.out.println(cost);
-            } catch (RuntimeException | IOException e) {
+            } catch (IOException e) {
                 System.out.println("Runtime/IOException ");
                 e.printStackTrace();
             }
